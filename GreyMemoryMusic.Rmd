@@ -1,0 +1,53 @@
+---
+title: "GreyMemory music"
+author: "Anton Mazhurin"
+output: html_document
+---
+
+#XDM parameters
+
+* Window size = 3..13  
+* Number of songs = 200  
+
+
+```{r, echo=FALSE}
+plot_accuracy <- function(file_name){
+  names <- c()
+  colors <- c()
+  range <- c(3,5,7,9,11,13)
+  #range <- c(3,5,7,9)
+  markers <- c()
+  marker = 15
+  for (w in range){
+    marker <- marker + 1
+    markers <- c(marker, markers)
+    color <- w-2
+    names <- c(toString(w), names)
+    colors <- c(color, colors)
+    v <- read.csv(paste(file_name, toString(w),'.csv', sep = ''), header = FALSE)
+    if(w == 3)
+      plot(10*log10(v[,2]), v[,4], xlab = "dB", ylab = "%", main = "", type = "b", col=color, ylim = c(0,150), pch = marker)
+    else 
+      lines(10*log10(v[,2]), v[,4], type = "b", col = color, pch = marker)
+  }
+  legend('topright', names, lty=1, col=colors, bty='n', cex = .75, pch = markers)
+}
+```
+  
+#Duration
+```{r, echo=FALSE}
+plot_accuracy('accuracy_duration_')
+```
+
+#Offset
+```{r}
+plot_accuracy('accuracy_offset_')
+```
+
+#Pitch
+```{r, echo=FALSE}
+plot_accuracy('accuracy_pitch_')
+
+```
+
+
